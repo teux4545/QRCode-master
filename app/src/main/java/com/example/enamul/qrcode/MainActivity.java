@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     listStruct codes = new listStruct();
     ArrayList<String> list = new ArrayList<>();
     int cnt=0;
-
+    
     TextView tv_qr_readTxt;
 
     @Override
@@ -137,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+
         if(result != null) {
             if(result.getContents() == null) {
                 Log.e("Scan*******", "Cancelled scan");
@@ -148,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
                 LinearLayout bgElement = findViewById(R.id.margin);
                 String f = (String)result.getContents();
                 boolean check = true;
-
+                codes.getDati();
                 if (codes.contain(f)) {
                         list.add(f);
                     for(String elem : list){

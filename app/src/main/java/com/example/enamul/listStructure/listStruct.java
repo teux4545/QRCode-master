@@ -1,8 +1,20 @@
 package com.example.enamul.listStructure;
 
+import android.os.StrictMode;
+import android.util.Log;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
 public class listStruct {
 
-        private String[] codici = {
+        private String[] codici = new String[0];
+    private String[] nomi = new String[0];
+    private String[] cognomi = new String[0];
+    private Integer[] importi_pagati;
+            /*{
             "Zds^03fdV&Ym",
             "X3epsLutqU#!",
             "rnOxiE4Y5fcQ",
@@ -155,7 +167,46 @@ public class listStruct {
             "QcongkInlas5",
             "gkdaYlO07bV4",
             "q8FPHlKfFcCR"
-    };
+    };*/
+        public void getDati(){
+            Connection conn = null;
+            String ip,port,user,pass,database;
+
+            ip="localhost";
+            port="8001";
+            user="root";
+            pass="p5naKHD[7nyz8.-2";
+            database="lista_capodanno";
+
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+
+            try{
+                Class.forName("net.sourceforge.jtds.jdbc.Driver");
+                String ConnectionURL="jdbc.jtds.sqlserver://" + ip + ":" + port + ";" + "databasename=" + database + ";uname=" + user + ";password="+pass+";";
+                conn = DriverManager.getConnection(ConnectionURL);
+
+                if (conn!=null){
+
+                    String query="Select * from Invitati_cena";
+                    Statement st = conn.createStatement();
+                    ResultSet rs = st.executeQuery(query);
+                    int j=0;
+
+                    while (rs.next()){
+                        codici[j]=rs.getString(1);
+                        nomi[j]=rs.getString(2);
+                        cognomi[j]=rs.getString(3);
+                        importi_pagati[j]=rs.getInt(4);
+                        j++;
+                    }
+                }
+            }
+
+            catch (Exception ex){
+                Log.e("Error", ex.getMessage());
+            }
+        }
 
         public Boolean contain(String code){
             for(String cod : codici){
@@ -166,8 +217,20 @@ public class listStruct {
             return false;
         }
 
-        public String[] getCod() {
+        public String[] getCodici() {
             return codici;
         }
+
+    public String[] getNomi() {
+        return nomi;
+    }
+
+    public String[] getCognomi() {
+        return cognomi;
+    }
+
+    public Integer[] getImportipagati() {
+        return importi_pagati;
+    }
 
 }
