@@ -5,8 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +13,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.enamul.listStructure.listStruct;
 import com.google.zxing.BarcodeFormat;
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     listStruct codes = new listStruct();
     ArrayList<String> list = new ArrayList<>();
     int cnt=0;
-    
+
     TextView tv_qr_readTxt;
 
     @Override
@@ -150,7 +151,9 @@ public class MainActivity extends AppCompatActivity {
                 String f = (String)result.getContents();
                 boolean check = true;
                 codes.getDati();
-                if (codes.contain(f)) {
+               String[] scanned = codes.getCodici();
+
+                if (codes.contain(f,scanned)) {
                         list.add(f);
                     for(String elem : list){
                         if(elem.equals(f)) {
