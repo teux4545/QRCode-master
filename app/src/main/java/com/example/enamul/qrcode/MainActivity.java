@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.enamul.getDati.getDati;
 import com.example.enamul.listStructure.listStruct;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -36,8 +37,9 @@ public class MainActivity extends AppCompatActivity {
     public final static int QRcodeWidth = 350 ;
     Bitmap bitmap ;
 
-    listStruct codes = new listStruct();
+    listStruct control = new listStruct();
     ArrayList<String> list = new ArrayList<>();
+    getDati dates = new getDati();
     int cnt=0;
 
     TextView tv_qr_readTxt;
@@ -56,8 +58,6 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
 
                 if(!editText.getText().toString().isEmpty()){
                     EditTextValue = editText.getText().toString();
@@ -150,10 +150,11 @@ public class MainActivity extends AppCompatActivity {
                 LinearLayout bgElement = findViewById(R.id.margin);
                 String f = (String)result.getContents();
                 boolean check = true;
-                codes.getDati();
-               String[] scanned = codes.getCodici();
 
-                if (codes.contain(f,scanned)) {
+                dates.Dati();
+                String[] scanned = dates.getCodici();
+
+                if (control.contain(f,scanned)) {
                         list.add(f);
                     for(String elem : list){
                         if(elem.equals(f)) {

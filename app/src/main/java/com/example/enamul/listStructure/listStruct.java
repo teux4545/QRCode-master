@@ -1,17 +1,8 @@
 package com.example.enamul.listStructure;
 
-import android.os.StrictMode;
-import android.util.Log;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
 public class listStruct {
 
-        private String[] codici = new String[0];
+    private String[] codici = new String[0];
     private String[] nomi = new String[0];
     private final String[] cognomi = new String[0];
     private Integer[] importi_pagati;
@@ -170,48 +161,7 @@ public class listStruct {
     "gkdaYlO07bV4",
     "q8FPHlKfFcCR"
 };*/
-        public void getDati(){
-            String user,pass;
 
-            user = "root";
-            pass = "p5naKHD[7nyz8.-2";
-
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-            Connection connection = null;
-
-            try{
-                Class.forName("net.sourceforge.jtds.jdbc.Driver");
-                String ConnectionURL="jdbc:jtds:sqlserver://localhost:8001;databasename=lista_capodanno;user=" +user+ ";password=" +pass+ ";";
-                connection = DriverManager.getConnection(ConnectionURL);
-
-                if (connection!=null){
-                    String query="Select * from Invitati_cena";
-                    Statement st = connection.createStatement();
-                    ResultSet rs = st.executeQuery(query);
-                    int j=0;
-
-                    while (rs.next()){
-                        codici[j]=rs.getString(1);
-                        nomi[j]=rs.getString(2);
-                        cognomi[j]=rs.getString(3);
-                        importi_pagati[j]=rs.getInt(4);
-                        j++;
-                    }
-                 connection.close();
-                }
-            }
-
-            catch (ClassNotFoundException ex){
-                Log.e("ClassNotFoundException", ex.getMessage());
-            }
-            catch (SQLException ex){
-                Log.e("SQLException", ex.getMessage());
-            }
-            catch (NullPointerException ex){
-                Log.e("NullPointerException", ex.getMessage());
-            }
-        }
 
         public Boolean contain(String code, String[] scanned){
             for(String cod : scanned){
@@ -221,21 +171,5 @@ public class listStruct {
             }
             return false;
         }
-
-        public String[] getCodici() {
-            return codici;
-        }
-
-    public String[] getNomi() {
-        return nomi;
-    }
-
-    public String[] getCognomi() {
-        return cognomi;
-    }
-
-    public Integer[] getImportipagati() {
-        return importi_pagati;
-    }
 
 }
