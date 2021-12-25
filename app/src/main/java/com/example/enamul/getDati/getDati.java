@@ -1,6 +1,8 @@
 package com.example.enamul.getDati;
 
-import org.apache.poi.Version;
+import android.os.AsyncTask;
+import android.os.Build;
+import android.os.StrictMode;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,60 +12,95 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class getDati {
+public class getDati extends AsyncTask <Void, String[], String[]> {
 
-        private final String[] codici = new String[0];
-        private final String[] nomi = new String[0];
-        private final String[] cognomi = new String[0];
-        private final Integer[] importi_pagati = new Integer[0];
-        public int j = 0;
+        private String[] codici = new String[150];
+        private String[] nomi = new String[150];
+        private String[] cognomi = new String[150];
+        private Integer[] importi_pagati = new Integer[150];
+        private int j = 0;
 
-        public void Dati() {
-        Connection con = null;
+        Connection con;
         Statement st = null;
         ResultSet rs = null;
 
-        String url = "jdbc:jtds:sqlserver://localhost:3306/lista_capodanno";
         String user = "root";
         String password = "p5naKHD[7nyz8.-2";
 
-        try {
-                Class.forName("net.sourceforge.jtds.jdbc.Driver");
-                con = DriverManager.getConnection(url, user, password);
-                st = con.createStatement();
-                rs = st.executeQuery("SELECT * FROM Invitati_cena");
+        String url = "jdbc:mysql://localhost:3306/lista_capodanno";
 
-                while (rs.next()) {
-                        codici[j]=rs.getString("Codici");
-                        nomi[j]=rs.getString("Nome");
-                        cognomi[j]=rs.getString("Cognome");
-                        importi_pagati[j]=rs.getInt("Importo_pagato");
-                        j++;
-                }
+        String resultRaw;
 
-        } catch (SQLException | ClassNotFoundException ex) {
-                Logger lgr = Logger.getLogger(Version.class.getName());
-                lgr.log(Level.SEVERE, ex.getMessage(), ex);
 
-        } finally {
+        @Override
+        protected String[] doInBackground(Void... voids) {
+                String[] tot = new String[150];
                 try {
-                        if (rs != null) {
-                                rs.close();
-                        }
-                        if (st != null) {
-                                st.close();
-                        }
-                        if (con != null) {
-                                con.close();
+
+                        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                        StrictMode.setThreadPolicy(policy);
+
+                        Class.forName("com.mysql.jdbc.Driver").newInstance();
+                        con = DriverManager.getConnection(url, user, password);
+                        st = con.createStatement();
+                        rs = st.executeQuery("SELECT * FROM Invitati_cena");
+
+                        while (rs.next()) {
+                                //codici[j] = rs.getString("Codice");
+                                //nomi[j] = rs.getString("Nome");
+                                //cognomi[j] = rs.getString("Cognome");
+                                //importi_pagati[j] = rs.getInt("Importo_pagato");
+                                //Log.e("numero: " + j, "aggiunto: " + codici[j]);
+                                resultRaw += rs.getString("Codice") + " " + rs.getString("Nome") + " " + rs.getString("Cognome") + " " + rs.getInt("Importo_pagato");
+                                     tot[j]=resultRaw;
+                                     j++;
                         }
 
-                } catch (SQLException ex) {
-                        Logger lgr = Logger.getLogger(Version.class.getName());
-                        lgr.log(Level.WARNING, ex.getMessage(), ex);
+
+                } catch (SQLException | ClassNotFoundException ex) {
+                        Logger lgr = Logger.getLogger(Build.VERSION.class.getName());
+                        lgr.log(Level.SEVERE, ex.getMessage(), ex);
+
+                } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                } catch (InstantiationException e) {
+                        e.printStackTrace();
+                } catch (NullPointerException e) {
+                        e.printStackTrace();
+                } finally {
+                        try {
+                                if (rs != null) {
+                                        rs.close();
+                                }
+                                if (st != null) {
+                                        st.close();
+                                }
+                                if (con != null) {
+                                        con.close();
+                                }
+
+                        } catch (SQLException ex) {
+                                Logger lgr = Logger.getLogger(Build.VERSION.class.getName());
+                                lgr.log(Level.WARNING, ex.getMessage(), ex);
+                        } catch (NullPointerException e) {
+                                e.printStackTrace();
+                        }
                 }
+
+               return tot;
         }
+
+        @Override
+        protected void onPostExecute(String[] result){
+
+                Classe c = new Classe();
+                for(String s : result){
+                        
+                }
+
         }
-        public String[] getCodici() {
+
+        public String[] getCod() {
                 return codici;
         }
 
@@ -78,5 +115,9 @@ public class getDati {
         public Integer[] getImportipagati() {
                 return importi_pagati;
         }
-        
+
 }
+
+
+
+

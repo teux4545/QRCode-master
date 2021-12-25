@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.enamul.getDati.Classe;
 import com.example.enamul.getDati.getDati;
 import com.example.enamul.listStructure.listStruct;
 import com.google.zxing.BarcodeFormat;
@@ -48,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        new getDati().execute();
 
         imageView = (ImageView)findViewById(R.id.imageView);
         editText = (EditText)findViewById(R.id.editText);
@@ -150,11 +153,9 @@ public class MainActivity extends AppCompatActivity {
                 LinearLayout bgElement = findViewById(R.id.margin);
                 String f = (String)result.getContents();
                 boolean check = true;
+                Classe c = new Classe();
 
-                dates.Dati();
-                String[] scanned = dates.getCodici();
-
-                if (control.contain(f,scanned)) {
+                if (control.contain(f, c.getC())) {
                         list.add(f);
                     for(String elem : list){
                         if(elem.equals(f)) {
