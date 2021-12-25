@@ -40,7 +40,8 @@ public class MainActivity extends AppCompatActivity {
 
     listStruct control = new listStruct();
     ArrayList<String> list = new ArrayList<>();
-    getDati dates = new getDati();
+    //getDati dates = new getDati();
+    Classe dates = new Classe();
     int cnt=0;
 
     TextView tv_qr_readTxt;
@@ -153,9 +154,8 @@ public class MainActivity extends AppCompatActivity {
                 LinearLayout bgElement = findViewById(R.id.margin);
                 String f = (String)result.getContents();
                 boolean check = true;
-                Classe c = new Classe();
 
-                if (control.contain(f, c.getC())) {
+                if (control.contain(f, dates.getDati())) {
                         list.add(f);
                     for(String elem : list){
                         if(elem.equals(f)) {
@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if(cnt==1){
-                    tv_qr_readTxt.setText("CODICE TROVATO!");
+                    tv_qr_readTxt.setText("CODICE TROVATO!\n" + dates.getDati()[control.i]);
                     bgElement.setBackgroundColor(Color.parseColor("#00e600"));
                     Toast.makeText(this, "Esito: " + "PRESENTE IN LISTA!", Toast.LENGTH_LONG).show();
                     check = false;

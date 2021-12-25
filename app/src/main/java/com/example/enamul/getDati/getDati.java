@@ -3,21 +3,28 @@ package com.example.enamul.getDati;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.StrictMode;
+import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class getDati extends AsyncTask <Void, String[], String[]> {
+public class getDati extends AsyncTask <Void, Void, String[]> {
 
-        private String[] codici = new String[150];
-        private String[] nomi = new String[150];
-        private String[] cognomi = new String[150];
-        private Integer[] importi_pagati = new Integer[150];
+        private String[] codici = new String[120];
+        private String[] nomi = new String[120];
+        private String[] cognomi = new String[120];
+        private Integer[] importi_pagati = new Integer[120];
         private int j = 0;
 
         Connection con;
@@ -29,12 +36,13 @@ public class getDati extends AsyncTask <Void, String[], String[]> {
 
         String url = "jdbc:mysql://localhost:3306/lista_capodanno";
 
-        String resultRaw;
-
 
         @Override
         protected String[] doInBackground(Void... voids) {
-                String[] tot = new String[150];
+                String[] tot = new String[120];
+                String resultRaw;
+                //JSONArray sumRaw = new JSONArray();
+                //JSONObject singleData = new JSONObject();
                 try {
 
                         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -46,14 +54,17 @@ public class getDati extends AsyncTask <Void, String[], String[]> {
                         rs = st.executeQuery("SELECT * FROM Invitati_cena");
 
                         while (rs.next()) {
-                                //codici[j] = rs.getString("Codice");
-                                //nomi[j] = rs.getString("Nome");
-                                //cognomi[j] = rs.getString("Cognome");
-                                //importi_pagati[j] = rs.getInt("Importo_pagato");
+                                //singleData.put("Codice", rs.getString("Codice"));
+                                //singleData.put("Nome", rs.getString("Nome"));
+                                //singleData.put("Cognome", rs.getString("Cognome"));
+                                //singleData.put("Importo pagato", rs.getInt("Importo_pagato"));
                                 //Log.e("numero: " + j, "aggiunto: " + codici[j]);
-                                resultRaw += rs.getString("Codice") + " " + rs.getString("Nome") + " " + rs.getString("Cognome") + " " + rs.getInt("Importo_pagato");
+                                resultRaw = rs.getString("Codice") + " " + rs.getString("Nome") + " " + rs.getString("Cognome") + " " + rs.getInt("Importo_pagato");
                                      tot[j]=resultRaw;
-                                     j++;
+                                     //
+                                //sumRaw.put(j,singleData);
+                                //result.add(j,sumRaw);
+                                j++;
                         }
 
 
@@ -91,16 +102,22 @@ public class getDati extends AsyncTask <Void, String[], String[]> {
         }
 
         @Override
-        protected void onPostExecute(String[] result){
+        protected void onPostExecute(String[] result) {
 
-                Classe c = new Classe();
-                for(String s : result){
-                        
+                for(int k=0;k<result.length;k++){
+                        if(result[k]!=null) {
+                                //Log.e("numero: " + k, "aggiunto: " + result[k]);
+                                Classe.dati[k]=result[k];
+                                //Log.e("numero: " + k, "aggiunto: " + Classe.dati[k]);
+                        }
+                        else{
+                                break;
+                        }
                 }
 
         }
 
-        public String[] getCod() {
+        /*public String[] getCod() {
                 return codici;
         }
 
@@ -114,7 +131,7 @@ public class getDati extends AsyncTask <Void, String[], String[]> {
 
         public Integer[] getImportipagati() {
                 return importi_pagati;
-        }
+        }*/
 
 }
 
