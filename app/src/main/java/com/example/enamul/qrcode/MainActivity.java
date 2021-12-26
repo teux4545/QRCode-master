@@ -42,8 +42,10 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> list = new ArrayList<>();
     Dati dates = new Dati();
     int cnt=0;
+    boolean check = true;
 
     TextView tv_qr_readTxt;
+    TextView tv_qr_readTxt2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         button = (Button)findViewById(R.id.button);
         btnScan = (Button)findViewById(R.id.btnScan);
         tv_qr_readTxt = (TextView) findViewById(R.id.tv_qr_readTxt);
+        tv_qr_readTxt2 = (TextView) findViewById(R.id.tv_qr_readTxt2);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,45 +155,60 @@ public class MainActivity extends AppCompatActivity {
 
                 LinearLayout bgElement = findViewById(R.id.margin);
                 String f = (String)result.getContents();
-                boolean check = true;
 
-                try{
                     if (control.contain(f, dates.getDati())) {
                         list.add(f);
-                    for(String elem : list){
-                        if(elem.equals(f)) {
+
+                        for(String elem : list){
+
+                            if(elem.equals(f)) {
                             cnt += 1;
-                        }
-                        if(cnt>1){
+                            }
+
+                            if(cnt>1){
                             String[] currentElement = dates.getDati();
                             String element = currentElement[control.getI()];
                             String[] parts = element.split(" ");
 
-                            tv_qr_readTxt.setText("UTENTE\nNome: " + parts[1] + "\nCognome: " + parts[2] + "\nGIA' SCANSIONATO!");
+                            tv_qr_readTxt.setText("Nome: " + parts[1] + "\nCognome: " + parts[2] + "\nGIA' SCANSIONATO!");
                             bgElement.setBackgroundColor(Color.parseColor("#ffcc00"));
                             Toast.makeText(this, "Esito: " + "Verificare", Toast.LENGTH_LONG).show();
+                            tv_qr_readTxt2.setText("");
                             check = false;
                             break;
+                            }
                         }
                     }
-                    }
-                }
-                catch(NullPointerException ex){
-                    ex.printStackTrace();
-                }
 
                 if(cnt==1){
                     String[] currentElement = dates.getDati();
                     String element = currentElement[control.getI()];
                     String[] parts = element.split(" ");
+                    Integer n = 0;
+                    n = Integer.parseInt(parts[3]);
+                    bgElement.setBackgroundColor(Color.parseColor("#00e600"));
+
+                    switch(n){
+                        case 60:
+                            tv_qr_readTxt2.setText("Pagamento totale avvenuto!");
+                            break;
+                        case 10:
+                            tv_qr_readTxt2.setText("Parzialmemte pagato");
+                            tv_qr_readTxt2.setBackgroundColor(Color.parseColor("#ffcc00"));
+                            break;
+                        case 0:
+                            tv_qr_readTxt2.setText("Pagamento non pervenuto!");
+                            tv_qr_readTxt2.setBackgroundColor(Color.parseColor("#ff1a1a"));
+                            break;
+                    }
 
                     tv_qr_readTxt.setText("CODICE TROVATO!\nNome: " + parts[1] + "\nCognome: " + parts[2]);
-                    bgElement.setBackgroundColor(Color.parseColor("#00e600"));
                     Toast.makeText(this, "Esito: " + "PRESENTE IN LISTA!", Toast.LENGTH_LONG).show();
                     check = false;
                 }
 
                 if(check) {
+                    tv_qr_readTxt2.setText("");
                     tv_qr_readTxt.setText("CODICE NON TROVATO!");
                     bgElement.setBackgroundColor(Color.parseColor("#ff1a1a"));
                     Toast.makeText(this, "Esito: " + "Utente non presente in lista", Toast.LENGTH_LONG).show();

@@ -38,7 +38,7 @@ tools:context="com.example.enamul.qrcode.MainActivity">
             <TextView
                 android:id="@+id/tv_qr_readTxt"
                 android:layout_width="match_parent"
-                android:layout_height="221dp"
+                android:layout_height="186dp"
                 android:autoSizeTextType="uniform"
                 android:gravity="center" />
 
@@ -61,7 +61,15 @@ tools:context="com.example.enamul.qrcode.MainActivity">
                 android:textAllCaps="false"
                 android:textSize="16sp" />
 
+            <TextView
+                android:id="@+id/tv_qr_readTxt2"
+                android:layout_width="match_parent"
+                android:layout_height="74dp"
+                android:autoSizeTextType="uniform"
+                android:gravity="center"
+                android:translationY="65dp" />
 
-    </LinearLayout>
+
+        </LinearLayout>
 
 </LinearLayout>
