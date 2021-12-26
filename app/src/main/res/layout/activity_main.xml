@@ -38,14 +38,14 @@ tools:context="com.example.enamul.qrcode.MainActivity">
             <TextView
                 android:id="@+id/tv_qr_readTxt"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="221dp"
                 android:autoSizeTextType="uniform"
                 android:gravity="center" />
 
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="53dp"
                 android:layout_below="@+id/button"
                 android:src="@android:drawable/ic_dialog_email"
                 android:visibility="invisible" />

@@ -17,8 +17,8 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.enamul.getDati.Classe;
-import com.example.enamul.getDati.getDati;
+import com.example.enamul.getDati.Dati;
+import com.example.enamul.getDati.asyncTaskGetDati;
 import com.example.enamul.listStructure.listStruct;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -40,8 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     listStruct control = new listStruct();
     ArrayList<String> list = new ArrayList<>();
-    //getDati dates = new getDati();
-    Classe dates = new Classe();
+    Dati dates = new Dati();
     int cnt=0;
 
     TextView tv_qr_readTxt;
@@ -51,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        new getDati().execute();
+        new asyncTaskGetDati().execute();
 
         imageView = (ImageView)findViewById(R.id.imageView);
         editText = (EditText)findViewById(R.id.editText);
@@ -155,24 +154,37 @@ public class MainActivity extends AppCompatActivity {
                 String f = (String)result.getContents();
                 boolean check = true;
 
-                if (control.contain(f, dates.getDati())) {
+                try{
+                    if (control.contain(f, dates.getDati())) {
                         list.add(f);
                     for(String elem : list){
                         if(elem.equals(f)) {
                             cnt += 1;
                         }
                         if(cnt>1){
-                            tv_qr_readTxt.setText("UTENTE GIA' SCANSIONATO!");
+                            String[] currentElement = dates.getDati();
+                            String element = currentElement[control.getI()];
+                            String[] parts = element.split(" ");
+
+                            tv_qr_readTxt.setText("UTENTE\nNome: " + parts[1] + "\nCognome: " + parts[2] + "\nGIA' SCANSIONATO!");
                             bgElement.setBackgroundColor(Color.parseColor("#ffcc00"));
                             Toast.makeText(this, "Esito: " + "Verificare", Toast.LENGTH_LONG).show();
                             check = false;
                             break;
                         }
                     }
+                    }
+                }
+                catch(NullPointerException ex){
+                    ex.printStackTrace();
                 }
 
                 if(cnt==1){
-                    tv_qr_readTxt.setText("CODICE TROVATO!\n" + dates.getDati()[control.i]);
+                    String[] currentElement = dates.getDati();
+                    String element = currentElement[control.getI()];
+                    String[] parts = element.split(" ");
+
+                    tv_qr_readTxt.setText("CODICE TROVATO!\nNome: " + parts[1] + "\nCognome: " + parts[2]);
                     bgElement.setBackgroundColor(Color.parseColor("#00e600"));
                     Toast.makeText(this, "Esito: " + "PRESENTE IN LISTA!", Toast.LENGTH_LONG).show();
                     check = false;
