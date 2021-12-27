@@ -42,6 +42,17 @@
                 android:gravity="center"
                 android:translationY="220dp" />
 
+            <Button
+                android:id="@+id/btnEmpty"
+                android:layout_width="330dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/round_corners2"
+                android:text="@string/svuota_il_database_temporaneo"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                android:translationY="280dp" />
+
 
         </LinearLayout>
 

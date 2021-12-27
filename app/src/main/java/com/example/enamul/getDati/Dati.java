@@ -11,4 +11,14 @@ public class Dati {
         dati=s;
     }
 
+    private static String[] datitemp = new String[300];
+
+    public String[] getDatiTemp() {
+        return datitemp;
+    }
+
+    public void setDatiTemp(String[] s) {
+        datitemp=s;
+    }
+
 }

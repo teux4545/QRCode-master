@@ -10,13 +10,14 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import java.util.ArrayList;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.enamul.getDati.Dati;
+import com.example.enamul.getDati.asyncTaskDeleteTemp;
 import com.example.enamul.getDati.asyncTaskGetDati;
+import com.example.enamul.getDati.asyncTaskPutTemporaryList;
 import com.example.enamul.listStructure.listStruct;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -24,12 +25,7 @@ import com.google.zxing.integration.android.IntentResult;
 public class MainActivity extends AppCompatActivity {
 
     Button btnScan;
-
-    listStruct control = new listStruct();
-    ArrayList<String> list = new ArrayList<>();
-    Dati dates = new Dati();
-    int cnt=0;
-    boolean check = true;
+    Button btnEmpty;
 
     TextView tv_qr_readTxt;
     TextView tv_qr_readTxt2;
@@ -42,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         new asyncTaskGetDati().execute();
 
         btnScan = (Button)findViewById(R.id.btnScan);
+        btnEmpty = (Button)findViewById(R.id.btnEmpty);
         tv_qr_readTxt = (TextView) findViewById(R.id.tv_qr_readTxt);
         tv_qr_readTxt2 = (TextView) findViewById(R.id.tv_qr_readTxt2);
 
@@ -60,6 +57,19 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        btnEmpty.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                IntentIntegrator integrator = new IntentIntegrator(MainActivity.this);
+                integrator.setPrompt("Empty");
+                new asyncTaskDeleteTemp().execute();
+                Toast.makeText(getApplicationContext(), "Tabella svuotata Correttamente!", Toast.LENGTH_LONG).show();
+
+            }
+        });
+
     }
 
 
@@ -67,6 +77,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+
+        listStruct control = new listStruct();
+        Dati dates = new Dati();
+        int cnt = 1;
 
         if(result != null) {
             if(result.getContents() == null) {
@@ -78,17 +92,19 @@ public class MainActivity extends AppCompatActivity {
 
                 LinearLayout bgElement = findViewById(R.id.margin);
                 String f = (String)result.getContents();
+                boolean check = true;
 
                     if (control.contain(f, dates.getDati())) {
-                        list.add(f);
+                        //list.add(f);
+                            new asyncTaskPutTemporaryList().execute(f);
 
-                        for(String elem : list){
+                        for(String elem : dates.getDatiTemp()){
 
-                            if(elem.equals(f)) {
+                            if(elem!=null && elem.equals(f)) {
                             cnt += 1;
                             }
 
-                            if(cnt>1){
+                            if(cnt>=2){
                             String[] currentElement = dates.getDati();
                             String element = currentElement[control.getI()];
                             String[] parts = element.split(" ");
@@ -97,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
                             bgElement.setBackgroundColor(Color.parseColor("#ffcc00"));
                             Toast.makeText(this, "Esito: " + "Verificare", Toast.LENGTH_LONG).show();
                             tv_qr_readTxt2.setText("");
+                            tv_qr_readTxt2.setBackgroundColor(Color.parseColor("#ffcc00"));
                             check = false;
                             break;
                             }
@@ -114,9 +131,10 @@ public class MainActivity extends AppCompatActivity {
                     switch(n){
                         case 60:
                             tv_qr_readTxt2.setText("Pagamento totale avvenuto!");
+                            tv_qr_readTxt2.setBackgroundColor(Color.parseColor("#00e600"));
                             break;
                         case 10:
-                            tv_qr_readTxt2.setText("Parzialmemte pagato");
+                            tv_qr_readTxt2.setText("Parzialmente pagato");
                             tv_qr_readTxt2.setBackgroundColor(Color.parseColor("#ffcc00"));
                             break;
                         case 0:
@@ -132,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if(check) {
                     tv_qr_readTxt2.setText("");
+                    tv_qr_readTxt2.setBackgroundColor(Color.parseColor("#ff1a1a"));
                     tv_qr_readTxt.setText("CODICE NON TROVATO!");
                     bgElement.setBackgroundColor(Color.parseColor("#ff1a1a"));
                     Toast.makeText(this, "Esito: " + "Utente non presente in lista", Toast.LENGTH_LONG).show();

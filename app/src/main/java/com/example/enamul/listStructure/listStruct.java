@@ -5,11 +5,13 @@ public class listStruct {
 
         public Boolean contain(String code, String[] scanned){
                i=0;
-            for(String s : scanned){
 
+            for(String s : scanned){
+                if(s!=null && code!=null){
                 String[] splitted = s.split(" ");
                     if (code.contains(splitted[0])) {
                         return true;
+                    }
                 }
                     i++;
             }
@@ -17,6 +19,6 @@ public class listStruct {
         }
 
     public int getI() {
-        return i;
+            return i;
     }
 }

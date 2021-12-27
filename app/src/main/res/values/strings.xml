@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">QRCode</string>
     <string name="scan_your_qr_code">Scan Your QR Code</string>
+    <string name="svuota_il_database_temporaneo">Svuota il database temporaneo</string>
 </resources>
