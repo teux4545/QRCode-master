@@ -96,8 +96,8 @@ public class MainActivity extends AppCompatActivity {
 
                     if (control.contain(f, dates.getDati())) {
                         //list.add(f);
-                            new asyncTaskPutTemporaryList().execute(f);
-
+                        dates.setDatiTemp(null);
+                        new asyncTaskPutTemporaryList().execute(f);
                         for(String elem : dates.getDatiTemp()){
 
                             if(elem!=null && elem.equals(f)) {
