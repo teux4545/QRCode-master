@@ -1,7 +1,7 @@
 package com.example.enamul.getDati;
 
 public class Dati {
-    private static String[] dati = new String[120];
+    private static String[] dati = new String[150];
 
     private static String[] datitemp = new String[300];
 

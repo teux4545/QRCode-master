@@ -29,7 +29,7 @@ public class asyncTaskGetDati extends AsyncTask <Void, Void, String[]> {
         @Override
         protected String[] doInBackground(Void... voids) {
 
-                String[] tot = new String[120];
+                String[] tot = new String[150];
                 String resultRaw;
 
                 try {
