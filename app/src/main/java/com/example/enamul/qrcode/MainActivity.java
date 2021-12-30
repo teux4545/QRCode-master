@@ -22,6 +22,8 @@ import com.example.enamul.listStructure.listStruct;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity {
 
     Button btnScan;
@@ -92,19 +94,17 @@ public class MainActivity extends AppCompatActivity {
 
                 LinearLayout bgElement = findViewById(R.id.margin);
                 String f = (String)result.getContents();
-                boolean check = true;
 
-                    if (control.contain(f, dates.getDati())) {
-                        //list.add(f);
-                        dates.setDatiTemp(null);
-                        new asyncTaskPutTemporaryList().execute(f);
-                        for(String elem : dates.getDatiTemp()){
+                if (control.contiene(f, dates.getDati())) {
+                    new asyncTaskPutTemporaryList().execute(f);
 
-                            if(elem!=null && elem.equals(f)) {
-                            cnt += 1;
-                            }
+                    for(String elem : dates.getDatiTemp()){
+                        if(Objects.equals(elem,f)) {
+                            cnt++;
+                        }
+                    }
 
-                            if(cnt>=2){
+                    if(cnt>=2){
                             String[] currentElement = dates.getDati();
                             String element = currentElement[control.getI()];
                             String[] parts = element.split(" ");
@@ -114,41 +114,41 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(this, "Esito: " + "Verificare", Toast.LENGTH_LONG).show();
                             tv_qr_readTxt2.setText("");
                             tv_qr_readTxt2.setBackgroundColor(Color.parseColor("#ffcc00"));
-                            check = false;
-                            break;
-                            }
                         }
+
+                    if(cnt==1){
+                        String[] currentElement = dates.getDati();
+                        String element = currentElement[control.getI()];
+                        String[] parts = element.split(" ");
+                        Integer n = 0;
+                        n = Integer.parseInt(parts[3]);
+                        bgElement.setBackgroundColor(Color.parseColor("#00e600"));
+
+                        switch(n){
+                            case 60:
+                                tv_qr_readTxt2.setText("Pagamento totale avvenuto!");
+                                tv_qr_readTxt2.setBackgroundColor(Color.parseColor("#00e600"));
+                                break;
+                            case 30:
+                                tv_qr_readTxt2.setText("Pagato 30 euro");
+                                tv_qr_readTxt2.setBackgroundColor(Color.parseColor("#ffcc00"));
+                                break;
+                            case 10:
+                                tv_qr_readTxt2.setText("Parzialmente pagato");
+                                tv_qr_readTxt2.setBackgroundColor(Color.parseColor("#ffcc00"));
+                                break;
+                            case 0:
+                                tv_qr_readTxt2.setText("Pagamento non pervenuto!");
+                                tv_qr_readTxt2.setBackgroundColor(Color.parseColor("#ff1a1a"));
+                                break;
+                        }
+
+                        tv_qr_readTxt.setText("CODICE TROVATO!\nNome: " + parts[1] + "\nCognome: " + parts[2]);
+                        Toast.makeText(this, "Esito: " + "PRESENTE IN LISTA!", Toast.LENGTH_LONG).show();
                     }
-
-                if(cnt==1){
-                    String[] currentElement = dates.getDati();
-                    String element = currentElement[control.getI()];
-                    String[] parts = element.split(" ");
-                    Integer n = 0;
-                    n = Integer.parseInt(parts[3]);
-                    bgElement.setBackgroundColor(Color.parseColor("#00e600"));
-
-                    switch(n){
-                        case 60:
-                            tv_qr_readTxt2.setText("Pagamento totale avvenuto!");
-                            tv_qr_readTxt2.setBackgroundColor(Color.parseColor("#00e600"));
-                            break;
-                        case 10:
-                            tv_qr_readTxt2.setText("Parzialmente pagato");
-                            tv_qr_readTxt2.setBackgroundColor(Color.parseColor("#ffcc00"));
-                            break;
-                        case 0:
-                            tv_qr_readTxt2.setText("Pagamento non pervenuto!");
-                            tv_qr_readTxt2.setBackgroundColor(Color.parseColor("#ff1a1a"));
-                            break;
-                    }
-
-                    tv_qr_readTxt.setText("CODICE TROVATO!\nNome: " + parts[1] + "\nCognome: " + parts[2]);
-                    Toast.makeText(this, "Esito: " + "PRESENTE IN LISTA!", Toast.LENGTH_LONG).show();
-                    check = false;
                 }
 
-                if(check) {
+                else{
                     tv_qr_readTxt2.setText("");
                     tv_qr_readTxt2.setBackgroundColor(Color.parseColor("#ff1a1a"));
                     tv_qr_readTxt.setText("CODICE NON TROVATO!");
@@ -162,4 +162,5 @@ public class MainActivity extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
+
 }

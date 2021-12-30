@@ -4,8 +4,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.StrictMode;
 
-import com.example.enamul.qrcode.MainActivity;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;

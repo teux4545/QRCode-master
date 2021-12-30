@@ -1,14 +1,8 @@
 package com.example.enamul.getDati;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.StrictMode;
-import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.enamul.qrcode.MainActivity;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

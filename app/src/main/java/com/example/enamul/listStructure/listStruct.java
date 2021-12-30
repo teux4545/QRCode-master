@@ -3,7 +3,7 @@ package com.example.enamul.listStructure;
 public class listStruct {
     private int i;
 
-        public Boolean contain(String code, String[] scanned){
+        public Boolean contiene(String code, String[] scanned){
                i=0;
 
             for(String s : scanned){
